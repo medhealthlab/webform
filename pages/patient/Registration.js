@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import {useFormik} from "formik"
 import { ValidationSchema } from '../../services/Validation'
+import app from "../../services/firebase/Firebase"
+
 import {db} from "../../services/firebase/Firebase"
-import {doc, setDoc } from "firebase/firestore"
+import {getFirestore, doc, setDoc } from "firebase/firestore"
 import Head from "next/head"
 export default function Registration() {
   const writeToFirebase = async (values) => {
+    const db = getFirestore(app)
     console.log(values)
-    console.log(doc(db,"/test/10123011712010606"))
-    await setDoc(doc(db, "/test/" + values.healthcard), values).then((val,err) => console.log(val))
+    // console.log(doc(db,"/reg"))
+    await setDoc(doc(db, `/reg/${values.healthcard}`), values).then((val,err) => console.log(err))
   }
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
