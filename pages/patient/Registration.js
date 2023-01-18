@@ -4,14 +4,14 @@ import { ValidationSchema } from '../../services/Validation'
 import app from "../../services/firebase/Firebase"
 
 import {db} from "../../services/firebase/Firebase"
-import {getFirestore, doc, setDoc } from "firebase/firestore"
+import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
 export default function Registration() {
   const writeToFirebase = async (values) => {
-    const db = getFirestore(app)
-    console.log(values)
-    // console.log(doc(db,"/reg"))
-    await setDoc(doc(db, `/reg/${values.healthcard}`), values).then((val,err) => console.log(err))
+    console.log("starting")
+    const dbRef = doc(db, "reg", values.healthcard)
+    const res = await setDoc(dbRef, values)
+    console.log("added")
   }
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
@@ -99,7 +99,7 @@ export default function Registration() {
             <div className='input-field'>
               <label className='label'>Phone </label>
                 {formik.touched.phone  ? <label className='text-sm italic text-red-900'>{formik.errors.phone}</label> : ""}
-                {console.log(formik.errors)}  
+                {/* {console.log(formik.errors)}   */}
                 <input name="phone" value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={phonePlaceholder} className="classic-input"/>
               </div>
               <div className='input-field'>
