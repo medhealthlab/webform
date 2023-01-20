@@ -7,10 +7,11 @@ import {db} from "../../services/firebase/Firebase"
 import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
 export default function Registration() {
+  const [success, setSuccess] = useState(false)
   const writeToFirebase = async (values) => {
     console.log("starting")
     const dbRef = doc(db, "reg", values.healthcard)
-    const res = await setDoc(dbRef, values)
+    const res = await setDoc(dbRef, values).then((val, err) => !err ? setSuccess(true) : setSuccess(false))
     console.log("added")
   }
 
