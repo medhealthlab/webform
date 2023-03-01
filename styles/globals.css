@@ -14,7 +14,7 @@
       @apply flex flex-col lg:w-96 sm:w-24 mb-5
     }
     .classic-input {
-      @apply focus:outline-none border-b
+      @apply focus:outline-none border-b text-gray-500 px-2 focus:shadow-md mt-2
     }
     .label{
       @apply text-lg font-semibold
