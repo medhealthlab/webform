@@ -5,7 +5,7 @@ const nextConfig = {
     return [
                {
                    source: '/',
-                   destination: '/patient/Registration',
+                   destination: '/checkRegistration',
                    permanent: true,
                 },
            ]
