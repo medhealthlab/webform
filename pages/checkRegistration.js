@@ -15,7 +15,7 @@ function CheckRegistration() {
         (
           console.log("call action"),
           console.log(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT),
-          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((resp) => {if(resp === "Registered"){router.push("/")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
+          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((response) => {if(response.data.resp === "Registered"){router.push("/registered")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
         )
         :
         (
@@ -32,10 +32,10 @@ function CheckRegistration() {
       <div className="mb-5 mx-2 py-5 border rounded-xl shadow-md flex flex-col justify-center item-center transition duration-700 ease-in-out absolute z-20 bg-white bg-opacity-25">
         <form onSubmit={(e) => (e.preventDefault(), handleSubmit())} className="px-5">
             <div className='input-field'>
-                    <label className='label' >Health card number*</label>
-                    <input value={healthcard} placeholder="Enter Health card" name="healthcard" onChange={(e) => handleChange(e)} className="classic-input" onSelect={() => selectInput()}/>
-                    <br/>
-                    <button type="submit" className="button">Submit</button>
+                <label className='label'>Health card number*</label>
+                <input value={healthcard} placeholder="Enter Health card" name="healthcard" onChange={(e) => handleChange(e)} className="classic-input" onSelect={() => selectInput()}/>
+                <br/>
+                <button type="submit" className="button">Submit</button>
             </div>
         </form>
       </div>
