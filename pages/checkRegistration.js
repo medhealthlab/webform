@@ -1,13 +1,27 @@
 import {useState} from "react"
+import Axios from "axios"
+import {useRouter} from "next/router"
+
 function CheckRegistration() {
+    const router = useRouter()
     const [touched, setTouched] = useState(false)
     const [healthcard, setHealthCard] = useState("Enter Health card")
     const [formError, setFormError] = useState([])
     const handleChange = (event) => {
       setHealthCard(event.target.value)
     }
-    const handleSubmit = () => {
-      healthcard.length === 10 ? console.log("call action"): setFormError([`length of the health card less than 10`]), console.log(formError)
+    const handleSubmit = async () => {
+      healthcard.length === 10 ? 
+        (
+          console.log("call action"),
+          console.log(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT),
+          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((resp) => {if(resp === "Registered"){router.push("/")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
+        )
+        :
+        (
+          setFormError([`length of the health card less than 10`]), 
+          console.log(formError)
+        )
     }
     const selectInput = () => {
       touched ? {} : (setHealthCard(""), console.log("reset the input"))
