@@ -33,6 +33,7 @@ function CheckRegistration() {
         <form onSubmit={(e) => (e.preventDefault(), handleSubmit())} className="px-5">
             <div className='input-field'>
                 <label className='label'>Health card number*</label>
+                {touched ? <p>{formError[0]}</p>:""}
                 <input value={healthcard} placeholder="Enter Health card" name="healthcard" onChange={(e) => handleChange(e)} className="classic-input" onSelect={() => selectInput()}/>
                 <br/>
                 <button type="submit" className="button">Submit</button>
