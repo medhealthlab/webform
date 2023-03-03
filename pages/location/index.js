@@ -18,33 +18,33 @@ function location() {
           <select onChange={(e) => handleChange(e)} className="px-5 focus:outline-none" required>
             <option disabled selected={!location} hidden>select a location</option>
             <option disabled selected={location} hidden>{location}</option>
-            <option disabled>North York</option>
+            <option disabled className="bg-gray-200 font-semibold">North York</option>
             <option>100</option>
             <option>101</option>
             <option>102</option>
             <option>120</option>
             <option>201</option>
-            <option disabled>Brampton</option>
+            <option disabled className="bg-gray-200 font-semibold">Brampton</option>
             <option>450</option>
             <option>490</option>
             <option>499</option>
-            <option disabled>Mississauga</option>
+            <option disabled className="bg-gray-200 font-semibold">Mississauga</option>
             <option>470</option>
             <option>474</option>
             <option>495</option>
-            <option disabled>Scarborough</option>
+            <option disabled className="bg-gray-200 font-semibold">Scarborough</option>
             <option>514</option>
             <option>516</option>
-            <option disabled>Hamilton</option>
+            <option disabled className="bg-gray-200 font-semibold">Hamilton</option>
             <option>701</option>
             <option>702</option>
-            <option disabled>New Market</option>
+            <option disabled className="bg-gray-200 font-semibold">New Market</option>
             <option>600</option>
-            <option disabled>Lindsay</option>
+            <option disabled className="bg-gray-200 font-semibold">Lindsay</option>
             <option>604</option>
-            <option disabled>Aurora</option>
+            <option disabled className="bg-gray-200 font-semibold">Aurora</option>
             <option>605</option>
-            <option disabled>St. Catharines</option>
+            <option disabled className="bg-gray-200 font-semibold">St. Catharines</option>
             <option>705</option>
           </select>
         </div>
