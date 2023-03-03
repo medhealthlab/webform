@@ -1,20 +1,25 @@
-import {useRouter} from "next/router"
 import Link from "next/link"
-import {useState} from "react"
+import {useState, useEffect} from "react"
 function location() {
   const [location , setLocation] = useState("")
   const handleChange = (e) => {
     window.localStorage.setItem("location",e.target.value)
     setLocation(window.localStorage.getItem("location"))
   }
+  useEffect(()=> {
+    setLocation(window.localStorage.getItem("location") ? window.localStorage.getItem("location") : "")
+  },[])
+
   return (
     <div className="mx-10 flex">
       <div className="border rounded-xl shadow-md px-5 py-10 flex flex-col relative">
         <div className="pb-5">
           <label className="text-lg">Select A location:</label>
           <select onChange={(e) => handleChange(e)} className="px-5 focus:outline-none" required>
-            <option disabled selected hidden>select a location</option>
+            <option disabled selected={!location} hidden>select a location</option>
+            <option disabled selected={location} hidden>{location}</option>
             <option disabled>North York</option>
+            <option>100</option>
             <option>101</option>
             <option>102</option>
             <option>120</option>
