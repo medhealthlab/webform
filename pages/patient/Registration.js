@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useFormik} from "formik"
 import { ValidationSchema } from '../../services/Validation'
 import app from "../../services/firebase/Firebase"
-
+import CryptoJS from "crypto-js"
 import {db} from "../../services/firebase/Firebase"
 import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
@@ -10,6 +10,11 @@ export default function Registration() {
   const [success, setSuccess] = useState(false)
   const writeToFirebase = async (values) => {
     console.log("starting")
+    console.log(process.env)
+    let ciphertxt = CryptoJS.AES.encrypt(values.healthcard, process.env.NEXT_PRIVATE_ENC_KEY).toString()
+    values.healthcard = ciphertxt
+    let dec = JSON.parse(CryptoJS.AES.decrypt(ciphertxt,"MHLABLTD1216").toString(CryptoJS.enc.Utf8))
+    console.log(dec)
     const dbRef = doc(db, "reg", values.healthcard)
     const res = await setDoc(dbRef, values).then((val, err) => !err ? setSuccess(true) : setSuccess(false))
     console.log("added")
@@ -20,6 +25,7 @@ export default function Registration() {
   const phonePlaceholder = "(XXX)XXXX-XXXX"
   const formik = useFormik({
     initialValues:{
+      location: window.localStorage.getItem("location"),
       firstname: "",
       lastname: "",
       middlename: "",
@@ -41,7 +47,7 @@ export default function Registration() {
     validationSchema: () => ValidationSchema, 
     onSubmit: values => {console.log(values), writeToFirebase(values).then((val, err)=> console.log(err))}
   })
-  useEffect(()=> {setHideFinalPage(false)},[])
+  useEffect(()=> {setHideFinalPage(false); formik.values.location = localStorage.getItem("location")},[])
   return (
     <>
     <Head>
