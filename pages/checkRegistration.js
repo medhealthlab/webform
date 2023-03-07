@@ -1,21 +1,23 @@
 import {useState} from "react"
 import Axios from "axios"
 import {useRouter} from "next/router"
-
+import Spinner from "../components/spinner/Spinner.js"
 function CheckRegistration() {
     const router = useRouter()
-    const [touched, setTouched] = useState(false)
+    const [touched, setTouched] = useState()
+    const [loading, setLoading] = useState(false)
     const [healthcard, setHealthCard] = useState("Enter Health card")
     const [formError, setFormError] = useState([])
     const handleChange = (event) => {
       setHealthCard(event.target.value)
     }
     const handleSubmit = async () => {
+      setLoading(true)
       healthcard.length === 10 ? 
         (
           console.log("call action"),
           console.log(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT),
-          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((response) => {if(response.data.resp === "Registered"){router.push("/registered")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
+          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((response) => {if(response.data.resp === "Registered"){window.localStorage.setItem("healthcard", healthcard), router.push("/registered")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
         )
         :
         (
@@ -33,10 +35,10 @@ function CheckRegistration() {
         <form onSubmit={(e) => (e.preventDefault(), handleSubmit())} className="px-5">
             <div className='input-field'>
                 <label className='label'>Health card number*</label>
-                {touched ? <p>{formError[0]}</p>:""}
+                {touched ? <p>{touched + formError[0]}</p>:<></>}
                 <input value={healthcard} placeholder="Enter Health card" name="healthcard" onChange={(e) => handleChange(e)} className="classic-input" onSelect={() => selectInput()}/>
                 <br/>
-                <button type="submit" className="button">Submit</button>
+                {loading ? <Spinner /> : <button type="submit" className="button">Submit</button>}
             </div>
         </form>
       </div>
