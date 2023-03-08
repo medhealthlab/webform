@@ -17,7 +17,23 @@ function CheckRegistration() {
         (
           console.log("call action"),
           console.log(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT),
-          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard}).then((response) => {if(response.data.resp === "Registered"){window.localStorage.setItem("healthcard", healthcard), router.push("/registered")}else{router.push("/patient/Registration")} }, (err) => {console.log(err)})
+          await Axios.post(process.env.NEXT_PUBLIC_CHECK_REGISTRATION_ENDPOINT,{ num: healthcard})
+          .then((response) => {
+            if(response.data.resp === "Registered"){
+                setLoading(false),
+                window.localStorage.setItem("healthcard", healthcard), 
+                router.push("/registered")
+              }
+              else{
+                setLoading(false),
+                router.push("/patient/Registration")
+              } 
+              }, 
+              (err) => {
+                setLoading(false),
+                console.log(err)
+              }
+          )
         )
         :
         (
