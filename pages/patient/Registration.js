@@ -25,7 +25,7 @@ export default function Registration() {
   const phonePlaceholder = "(XXX)XXXX-XXXX"
   const formik = useFormik({
     initialValues:{
-      location: window.localStorage.getItem("location"),
+      location: "",
       firstname: "",
       lastname: "",
       middlename: "",
@@ -146,7 +146,7 @@ export default function Registration() {
               </div>
             </div>
             <button type="button" onClick={() => {setHideFinalPage(val => !val)}} className="button">{hideFinalPage ? "previous": "next"} Page</button>
-            <button hidden={!hideFinalPage} type="submit" className={Object.keys(formik.errors).length === 0 ? "button": "button hover:cursor-not-allowed"} disabled={Object.keys(formik.errors).length === 0 ? false: true}>Submit</button>
+            <button hidden={!hideFinalPage} type="submit" className={Object.keys(formik.errors).length === 0 ? "button": "button hover:cursor-not-allowed bg-red-200"} disabled={Object.keys(formik.errors).length === 0 ? false: true}>Submit</button>
           </form>
         </div>
       </div>
