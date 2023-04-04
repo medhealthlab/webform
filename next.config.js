@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  async redirects() {
+  // reactStrictMode: true,
+  redirects: async () => {
     return [
                {
                    source: '/',
-                   destination: '/checkRegistration',
+                   destination: '/location',
                    permanent: true,
                 },
            ]
