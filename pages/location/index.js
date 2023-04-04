@@ -1,6 +1,6 @@
 import Link from "next/link"
 import {useState, useEffect} from "react"
-function location() {
+function Location() {
   const [location , setLocation] = useState("")
   const handleChange = (e) => {
     window.localStorage.setItem("location",e.target.value)
@@ -56,4 +56,4 @@ function location() {
   )
 }
 
-export default location
+export default Location
