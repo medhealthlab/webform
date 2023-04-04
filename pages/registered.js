@@ -1,9 +1,11 @@
 import {useState, useEffect} from "react"
 
-function registered() {
+function Registered() {
   const [healthcard, setHealthcard] = useState("")
   const [location , setLocation] = useState("")
+  const [token, setToken] = useState()
   useEffect(() => {
+    setToken(window.localStorage.getItem("token"))
     setHealthcard(window.localStorage.getItem("healthcard"))
     setLocation(window.localStorage.getItem("location"))
     
@@ -15,7 +17,7 @@ function registered() {
         <h2 className="text-xl font-semibold">Stats:</h2>
         <div className="px-2">
           <p>Current Specimen Collection Centre: {location}</p>
-          <p>Virtual Queue ID: {null}</p>
+          <p>Virtual Queue ID: {token}</p>
           <p>Your Health Card: {healthcard}</p>
           {/* <p>Please be patient and we will serve you in {"time"}.</p> */}
           {/* Current wait times are ...  */}
@@ -25,4 +27,4 @@ function registered() {
   )
 }
 
-export default registered
+export default Registered
