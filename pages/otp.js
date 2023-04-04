@@ -24,7 +24,7 @@ function Otp() {
             <label className="text-xl font-semibold pb-5">OTP</label>
             <label>Please enter the OTP your received on your registered phone number</label>
             <label>If you do not receive an otp please visit the information desk and register.</label>
-            <input onChange={(e)=> setOtp(e.target.value)} maxlength="6" className="border-b text-center text-lg outline-none py-1 focus:border-b-4 focus:border-b-black focus:animate-pulse transition-all ease-in focus:duration-300" value={otp} placeholder="XXXXXX"/>
+            <input onChange={(e)=> setOtp(e.target.value)} maxLength="6" className="border-b text-center text-lg outline-none py-1 focus:border-b-4 focus:border-b-black focus:animate-pulse transition-all ease-in focus:duration-300" value={otp} placeholder="XXXXXX"/>
             <button type="submit" className={`${submitObject.status == "ready" ? "bg-green-300" : "bg-red-100"} px-5 py-2 my-2 rounded-xl hover:shadow-md shadow text-md font-semibold`}>Submit</button>
         </form>
     </div>
