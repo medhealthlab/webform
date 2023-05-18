@@ -24,6 +24,25 @@ function Otp() {
             <label className="text-xl font-semibold pb-5">OTP</label>
             <label>Please enter the OTP your received on your registered phone number</label>
             <label>If you do not receive an otp please visit the information desk and register.</label>
+            <div className="flex justify-center gap-5">
+            {[1, 2, 3, 4, 5, 6].map((digit, idx) => (
+        <input
+          key={idx}
+          type="text"
+          inputMode="numeric"
+          autoComplete="one-time-code"
+          pattern="\d{1}"
+          maxLength={1}
+          className="otp-input"
+          placeholder="x"
+        />
+      ))}
+                {/* <input className="text-2xl border rounded-xl px-4 py-5 text-center" placeholder="X" maxLength={1} />
+                <input className="text-2xl border rounded-xl px-4 py-5 text-center" placeholder="X" maxLength={1} />
+                <input className="text-2xl border rounded-xl px-4 py-5 text-center" placeholder="X" maxLength={1} />
+                <input className="text-2xl border rounded-xl px-4 py-5 text-center" placeholder="X" maxLength={1} />
+                <input className="text-2xl border rounded-xl px-4 py-5 text-center" placeholder="X" maxLength={1} /> */}
+            </div>
             <input onChange={(e)=> setOtp(e.target.value)} maxLength="6" className="border-b text-center text-lg outline-none py-1 focus:border-b-4 focus:border-b-black focus:animate-pulse transition-all ease-in focus:duration-300" value={otp} placeholder="XXXXXX"/>
             <button type="submit" className={`${submitObject.status == "ready" ? "bg-green-300" : "bg-red-100"} px-5 py-2 my-2 rounded-xl hover:shadow-md shadow text-md font-semibold`}>Submit</button>
         </form>

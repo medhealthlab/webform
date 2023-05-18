@@ -107,6 +107,9 @@ function CheckRegistration() {
                 <label className='label'>Health card number*</label>
                 {touched ? <p>{formError[0]}</p>:<></>}
                 <input value={healthcard} placeholder="Enter Health card" name="healthcard" onChange={(e) => handleChange(e)} className="classic-input" onSelect={() => selectInput()}/>
+                <lable className="text-lg font-semibold text-center py-5">or</lable>
+                <label className='label'>Scan Health Card*</label>
+                <input type="file" onChange={(e) => setFile(e.target.files[0])}></input>
                 <br/>
                 {loading ? <Spinner /> : <button type="submit" className="button">Submit</button>}
             </div>
