@@ -44,7 +44,7 @@ function CheckRegistration() {
             window.localStorage.setItem("token", resp.data.token)
             setLoading(false),
             console.log("visit created"),
-            router.push("/Registered")
+            router.push("/registered")
           }else{
             setLoading(false),
             console.log("error occured."),
