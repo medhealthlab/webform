@@ -12,10 +12,13 @@ function Location() {
 
   return (
     <div className="mx-10 flex">
-      <div className="border rounded-xl shadow-md px-5 py-10 flex flex-col relative">
-        <div className="pb-5">
-          <label className="text-lg">Select A location:</label>
-          <select onChange={(e) => handleChange(e)} className="px-5 focus:outline-none" required>
+      <div className="border rounded-xl shadow-md px-5 py-10 flex flex-col relative items-center justify-center">
+        <div className="pb-5 flex flex-col items-center justify-center">
+          <div className="pb-5">
+            <h1 className="text-xl font-semibold">Which location are you at?</h1>
+            <h2 className="text-center text-sm">The number on the top of the QR Code you just scanned.</h2>
+          </div>
+          <select onChange={(e) => handleChange(e)} className="focus:border-blue-200 focus:border-2 focus:outline-none border border-blue-100 rounded-xl pl-5" required>
             <option disabled selected={!location} hidden>select a location</option>
             <option disabled selected={location} hidden>{location}</option>
             <option disabled className="bg-gray-200 font-semibold">North York</option>
