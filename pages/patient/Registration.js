@@ -6,18 +6,27 @@ import CryptoJS from "crypto-js"
 import {db} from "../../services/firebase/Firebase"
 import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
+import axios from 'axios'
 export default function Registration() {
   const [success, setSuccess] = useState(false)
   const writeToFirebase = async (values) => {
-    console.log("starting")
-    console.log(process.env)
-    let ciphertxt = CryptoJS.AES.encrypt(values.healthcard, process.env.NEXT_PRIVATE_ENC_KEY).toString()
-    values.healthcard = ciphertxt
-    let dec = JSON.parse(CryptoJS.AES.decrypt(ciphertxt,"MHLABLTD1216").toString(CryptoJS.enc.Utf8))
-    console.log(dec)
-    const dbRef = doc(db, "reg", values.healthcard)
-    const res = await setDoc(dbRef, values).then((val, err) => !err ? setSuccess(true) : setSuccess(false))
-    console.log("added")
+    const resp = await axios.post("https://us-central1-patient-registration-portal.cloudfunctions.net/web/registerPatient", {
+      healthcard: patientObject.healthcard,
+      province: patientObject.province,
+      firstname: patientObject.firstname,
+      middlename: patientObject.middlename,
+      lastname: patientObject.lastname,
+      dob: moment(patientObject.dob).clone().format("YYYYMMDD"),
+      sex: patientObject.sex,
+      issueDate: moment(values.issue).clone().format("YYYYMMDD"),
+      expDate: moment(values.expiry).clone().format("YYYYMMDD"),
+      vc: values.healthcard.slice(10,12),
+      address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}`,
+      phone: "",
+      mobile: values.mobile,
+      email: values.email,
+      comment: ""
+    })
   }
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
@@ -29,6 +38,7 @@ export default function Registration() {
       firstname: "",
       lastname: "",
       middlename: "",
+      sex: "",
       phone:"",
       address:{
         line1: "",
@@ -45,9 +55,13 @@ export default function Registration() {
 
     },
     validationSchema: () => ValidationSchema, 
-    onSubmit: values => {console.log(values), writeToFirebase(values).then((val, err)=> console.log(err))}
+    onSubmit: async values => {
+      console.log(values); 
+      const resp = await axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, location: "", address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`});
+      const resp2 = await axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_VISIT, {healthcard: values.healthcard, location: values.location}).then(val => console.log(val))
+    }
   })
-  useEffect(()=> {setHideFinalPage(false); formik.values.location = localStorage.getItem("location")},[])
+  useEffect(()=> {setHideFinalPage(false); formik.values.location = localStorage.getItem("location"); console.log(formik.values.location)},[])
   return (
     <>
     <Head>
@@ -84,6 +98,14 @@ export default function Registration() {
                 <label className='label' >Last Name*</label>
                 {formik.touched.lastname  ? <label className='text-sm italic text-red-900'>{formik.errors.lastname}</label> : ""}
                 <input name="lastname" value={formik.values.lastname} onChange={formik.handleChange} onBlur={formik.handleBlur}  className="classic-input"/>
+              </div>
+              <div className='input-field'>
+                <label className='label' >Biological Gender*</label>
+                <select name="sex" value={formik.values.sex} onChange={formik.handleChange}>
+                  <option disabled>Choose an option</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                </select>
               </div>
               <div className='input-field'>
                 <label className='label' >Date of birth*</label>
