@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {useFormik} from "formik"
+import {useRouter} from "next/router"
 import { ValidationSchema } from '../../services/Validation'
 import app from "../../services/firebase/Firebase"
 import CryptoJS from "crypto-js"
 import {db} from "../../services/firebase/Firebase"
 import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
-import axios from 'axios'
+import Axios from 'axios'
 export default function Registration() {
+  const router = useRouter()
   const [success, setSuccess] = useState(false)
   const writeToFirebase = async (values) => {
     const resp = await axios.post("https://us-central1-patient-registration-portal.cloudfunctions.net/web/registerPatient", {
@@ -57,8 +59,21 @@ export default function Registration() {
     validationSchema: () => ValidationSchema, 
     onSubmit: async values => {
       console.log(values); 
-      const resp = await axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, location: "", address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`});
-      const resp2 = await axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_VISIT, {healthcard: values.healthcard, location: values.location}).then(val => console.log(val))
+      const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, location: "", address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`});
+      console.log(resp)
+      if(resp.data.status == "operation successful"){
+        console.log("creating new visit")
+        const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: parseInt(values.location)})
+        if(resp2.data.msg == "visit created"){
+          window.localStorage.setItem("token", resp2.data.token)
+          console.log("visit created"),
+          router.push("/registered")
+        }else{
+          console.log("error occured.")
+        }
+      }else{
+        console.log("something went wrong...")
+      }
     }
   })
   useEffect(()=> {setHideFinalPage(false); formik.values.location = localStorage.getItem("location"); console.log(formik.values.location)},[])
@@ -103,7 +118,7 @@ export default function Registration() {
                 <label className='label' >Biological Gender*</label>
                 <select name="sex" value={formik.values.sex} onChange={formik.handleChange}>
                   <option disabled>Choose an option</option>
-                  <option>Male</option>
+                  <option selected>Male</option>
                   <option>Female</option>
                 </select>
               </div>
@@ -143,11 +158,11 @@ export default function Registration() {
                   {formik.touched.line1  ? <label className='text-sm italic text-red-900'>{formik.errors.line1}</label> : ""}
                   <input name="address.line1" value={formik.values.address.line1} onChange={formik.handleChange} onBlur={formik.handleBlur} className="classic-input"/>
                 </div>
-                <div className="flex flex-col pb-2">
+                {/* <div className="flex flex-col pb-2">
                   <label>Line 2</label>
                 {formik.touched.line2  ? <label className='text-sm italic text-red-900'>{formik.errors.line2}</label> : ""}
                   <input name="address.line2" value={formik.values.address.line2} onChange={formik.handleChange} onBlur={formik.handleBlur} className="classic-input"/>
-                </div>
+                </div> */}
 
                 <div className="lg:flex lg:flex-col lg:gap-5 lg:pb-2 ">
                   <div className='pb-2 flex flex-col'>
