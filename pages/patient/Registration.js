@@ -8,35 +8,36 @@ import {db} from "../../services/firebase/Firebase"
 import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
 import Axios from 'axios'
+import moment from "moment"
 export default function Registration() {
   const router = useRouter()
+  const [location, setLocation] = useState()
   const [success, setSuccess] = useState(false)
-  const writeToFirebase = async (values) => {
-    const resp = await axios.post("https://us-central1-patient-registration-portal.cloudfunctions.net/web/registerPatient", {
-      healthcard: patientObject.healthcard,
-      province: patientObject.province,
-      firstname: patientObject.firstname,
-      middlename: patientObject.middlename,
-      lastname: patientObject.lastname,
-      dob: moment(patientObject.dob).clone().format("YYYYMMDD"),
-      sex: patientObject.sex,
-      issueDate: moment(values.issue).clone().format("YYYYMMDD"),
-      expDate: moment(values.expiry).clone().format("YYYYMMDD"),
-      vc: values.healthcard.slice(10,12),
-      address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}`,
-      phone: "",
-      mobile: values.mobile,
-      email: values.email,
-      comment: ""
-    })
-  }
+  // const writeToFirebase = async (values) => {
+  //   const resp = await axios.post("https://us-central1-patient-registration-portal.cloudfunctions.net/web/registerPatient", {
+  //     healthcard: patientObject.healthcard,
+  //     province: patientObject.province,
+  //     firstname: patientObject.firstname,
+  //     middlename: patientObject.middlename,
+  //     lastname: patientObject.lastname,
+  //     dob: moment(patientObject.dob).clone().format("YYYYMMDD"),
+  //     sex: patientObject.sex,
+  //     issueDate: moment(values.issue).clone().format("YYYYMMDD"),
+  //     expDate: moment(values.expiry).clone().format("YYYYMMDD"),
+  //     vc: values.healthcard.slice(10,12),
+  //     address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}`,
+  //     phone: "",
+  //     mobile: values.mobile,
+  //     email: values.email,
+  //     comment: ""
+  //   })
+  // }
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
   const datePlaceholder = "YYYY-DD-MM"
   const phonePlaceholder = "(XXX)XXXX-XXXX"
   const formik = useFormik({
     initialValues:{
-      location: "",
       firstname: "",
       lastname: "",
       middlename: "",
@@ -52,18 +53,19 @@ export default function Registration() {
       email:"",
       healthcard:"",
       dob:"",
-      issue:"",
-      expiry:"",
+      issueDate:"",
+      expDate:"",
 
     },
     validationSchema: () => ValidationSchema, 
     onSubmit: async values => {
-      console.log(values); 
-      const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, location: "", address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`});
+      console.log(values);
+      const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`, issueDate: moment(formik.values.issueDate).clone().format("YYYYMMDD"), expDate: moment(formik.values.expDate).clone().format("YYYYMMDD"), dob: moment(formik.values.dob).clone().format("YYYYMMDD")});
       console.log(resp)
       if(resp.data.status == "operation successful"){
         console.log("creating new visit")
-        const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: parseInt(values.location)})
+
+        const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: location.toString()})
         if(resp2.data.msg == "visit created"){
           window.localStorage.setItem("token", resp2.data.token)
           console.log("visit created"),
@@ -76,7 +78,7 @@ export default function Registration() {
       }
     }
   })
-  useEffect(()=> {setHideFinalPage(false); formik.values.location = localStorage.getItem("location"); console.log(formik.values.location)},[])
+  useEffect(()=> {setHideFinalPage(false); setLocation(parseInt(localStorage.getItem("location"))); console.log(location)},[])
   return (
     <>
     <Head>
@@ -118,8 +120,9 @@ export default function Registration() {
                 <label className='label' >Biological Gender*</label>
                 <select name="sex" value={formik.values.sex} onChange={formik.handleChange}>
                   <option disabled>Choose an option</option>
-                  <option selected>Male</option>
-                  <option>Female</option>
+                  <option value="M" selected>Male</option>
+                  <option value="F">Female</option>
+                  <option value="O">Others</option>
                 </select>
               </div>
               <div className='input-field'>
@@ -130,13 +133,13 @@ export default function Registration() {
               
               <div className='input-field'>
                 <label className='label' >Issue Date*</label>
-                {formik.touched.issue  ? <label className='text-sm italic text-red-900'>{formik.errors.issue}</label> : ""}
-                <input name="issue" type="date" value={formik.values.issue} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
+                {formik.touched.issueDate  ? <label className='text-sm italic text-red-900'>{formik.errors.issueDate}</label> : ""}
+                <input name="issueDate" type="date" value={formik.values.issueDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
               </div>
               <div className='input-field'>
                 <label className='label' >Expiry Date*</label>
-                {formik.touched.expiry  ? <label className='text-sm italic text-red-900'>{formik.errors.expiry}</label> : ""}
-                <input name="expiry" type="date" value={formik.values.expiry} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
+                {formik.touched.expDate  ? <label className='text-sm italic text-red-900'>{formik.errors.expDate}</label> : ""}
+                <input name="expDate" type="date" value={formik.values.expDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
               </div>
             </div>
             <div hidden={!hideFinalPage}>
