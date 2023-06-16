@@ -64,8 +64,7 @@ export default function Registration() {
       console.log(resp)
       if(resp.data.status == "operation successful"){
         console.log("creating new visit")
-
-        const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: location.toString()})
+        const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: location})
         if(resp2.data.msg == "visit created"){
           window.localStorage.setItem("token", resp2.data.token)
           console.log("visit created"),
