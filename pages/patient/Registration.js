@@ -12,26 +12,6 @@ import moment from "moment"
 export default function Registration() {
   const router = useRouter()
   const [location, setLocation] = useState()
-  const [success, setSuccess] = useState(false)
-  // const writeToFirebase = async (values) => {
-  //   const resp = await axios.post("https://us-central1-patient-registration-portal.cloudfunctions.net/web/registerPatient", {
-  //     healthcard: patientObject.healthcard,
-  //     province: patientObject.province,
-  //     firstname: patientObject.firstname,
-  //     middlename: patientObject.middlename,
-  //     lastname: patientObject.lastname,
-  //     dob: moment(patientObject.dob).clone().format("YYYYMMDD"),
-  //     sex: patientObject.sex,
-  //     issueDate: moment(values.issue).clone().format("YYYYMMDD"),
-  //     expDate: moment(values.expiry).clone().format("YYYYMMDD"),
-  //     vc: values.healthcard.slice(10,12),
-  //     address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}`,
-  //     phone: "",
-  //     mobile: values.mobile,
-  //     email: values.email,
-  //     comment: ""
-  //   })
-  // }
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
   const datePlaceholder = "YYYY-DD-MM"
@@ -41,7 +21,7 @@ export default function Registration() {
       firstname: "",
       lastname: "",
       middlename: "",
-      sex: "",
+      sex: "M",
       phone:"",
       address:{
         line1: "",
@@ -59,9 +39,9 @@ export default function Registration() {
     },
     validationSchema: () => ValidationSchema, 
     onSubmit: async values => {
-      console.log(values);
+      // console.log("submit values", values);
       const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, address: `${values.address.line1}, ${values.address.city}, ${values.address.province}, ${values.address.postalcode}.`, issueDate: moment(formik.values.issueDate).clone().format("YYYYMMDD"), expDate: moment(formik.values.expDate).clone().format("YYYYMMDD"), dob: moment(formik.values.dob).clone().format("YYYYMMDD")});
-      console.log(resp)
+      // console.log(resp)
       if(resp.data.status == "operation successful"){
         console.log("creating new visit")
         const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: location.toString()})
@@ -118,8 +98,8 @@ export default function Registration() {
               <div className='input-field'>
                 <label className='label' >Biological Gender*</label>
                 <select name="sex" value={formik.values.sex} onChange={formik.handleChange}>
-                  <option disabled>Choose an option</option>
-                  <option value="M" selected>Male</option>
+                  <option disabled selected>Choose an option</option>
+                  <option value="M">Male</option>
                   <option value="F">Female</option>
                   <option value="O">Others</option>
                 </select>
@@ -146,7 +126,9 @@ export default function Registration() {
               <label className='label'>Phone </label>
                 {formik.touched.phone  ? <label className='text-sm italic text-red-900'>{formik.errors.phone}</label> : ""}
                 {/* {console.log(formik.errors)}   */}
-                <input name="phone" value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={phonePlaceholder} className="classic-input"/>
+                <div className='flex justify-base items-baseline'>
+                  <span>CA(+1)</span><input name="phone" value={formik.values.phone} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={phonePlaceholder} className="classic-input"/>
+                </div>
               </div>
               <div className='input-field'>
                 <label className='label' >Email  </label>
@@ -154,7 +136,7 @@ export default function Registration() {
                 <input name="email" value={formik.values.email} onChange={formik.handleChange} onBlur={formik.handleBlur} className="classic-input"/>
               </div>
               <div className='input-field'>
-                <label className='label pb-2' >Address  </label>
+                <label className='label pb-2' >Address</label>
                 <div className='flex flex-col pb-2'>
                   <label>Line 1</label>
                   {formik.touched.line1  ? <label className='text-sm italic text-red-900'>{formik.errors.line1}</label> : ""}
