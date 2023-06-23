@@ -11,6 +11,9 @@ function CheckRegistration() {
     const [location, setLocation] = useState()
     const [formError, setFormError] = useState([])
     const recaptchaRef = createRef()
+    const [file, setFile] = useState()
+    const [imageStr, setImageStr] = useState(false)
+    const [data, setData] = useState({})
 
     useEffect(()=>{
       if(!window){
@@ -98,6 +101,36 @@ function CheckRegistration() {
       touched ? {} : (setHealthCard(""), console.log("reset the input"))
       setTouched(true)
     }
+    function convertImageToBase64(imageFile) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+    
+        fileReader.onload = () => {
+          const srcData = fileReader.result;
+          resolve(srcData);
+        };
+    
+        fileReader.onerror = () => {
+          reject(new Error('Error occurred while reading the file.'));
+        };
+    
+        fileReader.readAsDataURL(imageFile);
+      });
+    }
+    
+    const parseImage = async () => {
+      // console.log('parsing the file.');
+      setLoading(true);
+      // console.log('converting');
+      try {
+        const imageStr = await convertImageToBase64(file);
+        const resp = await Axios.post('https://healthcard-ocr.nn.r.appspot.com/scan', { image: imageStr });
+        setData(resp)
+        handleSubmit()
+      } catch (error) {
+        console.error(error);
+      }
+    };
   return (
     <div className='h-screen flex items-center justify-center'>
       <div className="mb-5 mx-2 py-5 border rounded-xl shadow-md flex flex-col justify-center item-center transition duration-700 ease-in-out absolute z-20 bg-white bg-opacity-25">
@@ -110,6 +143,7 @@ function CheckRegistration() {
                 <lable className="text-lg font-semibold text-center py-5">or</lable>
                 <label className='label'>Scan Health Card*</label>
                 <input type="file" onChange={(e) => setFile(e.target.files[0])}></input>
+                <button type="button" onClick={async() => parseImage()}>Parse</button>
                 <br/>
                 {loading ? <Spinner /> : <button type="submit" className="button">Submit</button>}
             </div>
