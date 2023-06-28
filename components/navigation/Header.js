@@ -6,7 +6,7 @@ function header() {
         <div>
             <div>
                 <h1 className='lg:text-4xl text-2xl'>
-                    <Link href="/">MHL Virtual Assist </Link> 
+                    <Link href="/">MHL Express Checkin</Link> 
                 </h1>
             </div>
         </div>
