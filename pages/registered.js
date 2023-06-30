@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react"
+import { locations } from "../services/locations"
 
 function Registered() {
   const [healthcard, setHealthcard] = useState("")
@@ -8,21 +9,22 @@ function Registered() {
     setToken(window.localStorage.getItem("token"))
     setHealthcard(window.localStorage.getItem("healthcard"))
     setLocation(window.localStorage.getItem("location"))
-    
   },[])
   return (
-    <div className="px-10 flex flex-col">
-      <h1 className="text-2xl font-semibold">Welcome to Med Health labs Inc.</h1>
+    <div className="px-10 flex flex-col text-center">
+      <h1 className="text-2xl font-semibold">Welcome to <br />Med Health labs Ltd.</h1>
       <div className="border rounded-xl px-5 py-5 flex flex-col mt-5">
-        <h2 className="text-xl font-semibold">Stats:</h2>
-        <div className="px-2">
-          <p>Current Specimen Collection Centre: {location}</p>
-          <p>Virtual Queue ID: {token}</p>
+        <h2 className="text-xl font-semibold">Token number: <span className="text-2xl animate-pulse">{token}</span></h2>
+        <div className="px-2 py-5">
+          {/* <p>SCC number: {location}</p> */}
+          <h2>Your are at</h2>
+          {locations.map((loc) => {return (loc.scc == parseInt(location) ? <p key={loc.id}>{loc.address}</p> : "")})}
           <p>Your Health Card: {healthcard}</p>
           {/* <p>Please be patient and we will serve you in {"time"}.</p> */}
           {/* Current wait times are ...  */}
         </div>
       </div>
+          <p className="text-xs absolute bottom-0 mr-12 py-2">If you have any questions, please feel free to speak with any of the staff member.</p>
     </div>
   )
 }
