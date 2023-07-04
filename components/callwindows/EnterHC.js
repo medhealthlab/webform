@@ -1,14 +1,40 @@
-import { BaseFormValidationSchema } from "@/services/BaseFormValidation"
+import { useEffect, useContext } from "react"
+import { Data } from "@/context/dataContext"
 import { useFormik } from "formik"
-function EnterHC({selectedWindow, setSelectedWindow}) {
+import { BaseFormValidationSchema } from "@/services/BaseFormValidation"
+import {useRouter} from "next/router"
+import Axios from "axios"
+function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
+    const router = useRouter()
+    const {data, setData} = useContext(Data)
     const formik = useFormik({
         initialValues: {
-            healthcard: ""
+            healthcard: data.healthcard || ""
         },
         validationSchema: BaseFormValidationSchema,
-        onSubmit: () => {
-            console.log("submitted")
-            console.log(formik.values.healthcard)
+        onSubmit: async () => {
+            setData(data => ({...data, healthcard: formik.values.healthcard}))
+            formik.values.healthcard && data.location ? (
+                window.localStorage.setItem("healthcard",data.healthcard),
+                console.log("health card number: " + formik.values.healthcard , "from location: " + data.location),
+                await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: formik.values.healthcard, location: data.location}).then(async (resp) => {
+                  if(resp.data.msg == "visit created"){
+                    window.localStorage.setItem("token", resp.data.token)
+                    setData(data => ({...data, token: resp.data.token}))
+                    setLoading(false),
+                    console.log("visit created"),
+                    router.push("/registered")
+                  }else{
+                    setLoading(false),
+                    console.log("error occured."),
+                    router.push("/patient/Registration")
+                  }
+                }, err => {setLoading(false), console.log(err.message)})
+              ): (
+                setLoading(false),
+                console.log("something went wrong"),
+                console.log("health card number: " + formik.values.healthcard , "from location: " + data.location)
+              )
         }
     })
   return (
