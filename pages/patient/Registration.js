@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
 import {useFormik} from "formik"
 import {useRouter} from "next/router"
 import { ValidationSchema } from '../../services/Validation'
@@ -9,19 +9,21 @@ import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore
 import Head from "next/head"
 import Axios from 'axios'
 import moment from "moment"
+import { Data } from '@/context/dataContext'
 export default function Registration() {
   const router = useRouter()
   const [location, setLocation] = useState()
+  const {data, setData} = useContext(Data)
 
   const [hideFinalPage, setHideFinalPage] = useState(false)
   const datePlaceholder = "YYYY-DD-MM"
   const phonePlaceholder = "(XXX)XXXX-XXXX"
   const formik = useFormik({
     initialValues:{
-      firstname: "",
-      lastname: "",
-      middlename: "",
-      sex: "M",
+      firstname: data.firstname || "",
+      lastname: data.lastname || "",
+      middlename: data.middlename || "",
+      sex: data.sex || "M",
       phone:"",
       address:{
         line1: "",
@@ -31,10 +33,10 @@ export default function Registration() {
         postalcode:"",
       },
       email:"",
-      healthcard:"",
+      healthcard: data.healthcard || "",
       dob:"",
-      issueDate:"",
-      expDate:"",
+      issueDate: data.issueDate || "",
+      expDate: data.expDate || "",
 
     },
     validationSchema: () => ValidationSchema, 
@@ -57,7 +59,7 @@ export default function Registration() {
       }
     }
   })
-  useEffect(()=> {setHideFinalPage(false); setLocation(parseInt(localStorage.getItem("location"))); console.log(location)},[])
+  useEffect(()=> {setHideFinalPage(false); setLocation(parseInt(localStorage.getItem("location"))); console.log(data)},[])
   return (
     <>
     <Head>
