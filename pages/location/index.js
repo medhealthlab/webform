@@ -1,13 +1,13 @@
 import Link from "next/link"
-import {useState, useEffect} from "react"
+import {useState, useEffect, useContext} from "react"
+import { Data } from "@/context/dataContext"
 function Location() {
   const [location , setLocation] = useState("")
+  const {data, setData} = useContext(Data)
   const handleChange = (e) => {
-    window.localStorage.setItem("location",e.target.value)
-    setLocation(window.localStorage.getItem("location"))
+    setData((data) => ({...data, location: e.target.value}))
   }
   useEffect(()=> {
-    setLocation(window.localStorage.getItem("location") ? window.localStorage.getItem("location") : "")
   },[])
   
   return (
@@ -19,8 +19,8 @@ function Location() {
             <h2 className="text-center text-sm">The number on the top of the QR Code you just scanned.</h2>
           </div>
           <select onChange={(e) => handleChange(e)} className="focus:border-blue-200 focus:border-2 focus:outline-none border border-blue-100 rounded-xl px-5 py-2" required>
-            <option disabled value={!location} hidden={location}>select a location</option>
-            <option disabled value={location} hidden={!location}>{location}</option>
+            <option disabled value={!data.location} hidden={data.location}>select a location</option>
+            <option disabled value={data.location} hidden={!data.location}>{data.location}</option>
             <option disabled className="bg-gray-200 font-semibold">North York</option>
             <option>100</option>
             <option>101</option>
@@ -52,7 +52,7 @@ function Location() {
           </select>
         </div>
         {
-          location ? <Link className="border rounded-full px-3 py-1 shadow hover:shadow-lg focus:outline-none text-center" href="/checkRegistration">Next</Link> : ""
+          data.location ? <Link className="border rounded-full px-3 py-1 shadow hover:shadow-lg focus:outline-none text-center" href="/checkReg">Next</Link> : ""
         }
       </div>
     </div>
