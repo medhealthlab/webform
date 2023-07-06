@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import Axios from "axios"
 import { Data } from "@/context/dataContext"
 import { useRouter } from "next/router"
+import Spinner from "../spinner/Spinner"
 function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}) {
     const {data, setData} = useContext(Data)
     const router = useRouter()
@@ -75,9 +76,14 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
   return (
     <form onSubmit={(e) => {e.preventDefault(), handleSubmit(), e.stopPropagation()} }>
         <div className={selectedWindow == 2 ? "flex flex-col items-center py-5 border rounded-xl shadow-xl transition scale-105 ease-in-out duration-300 my-2": "flex flex-col items-center py-5 border rounded-xl transition-all ease-in-out duration-300 my-2"}>
-            <label className="text-xl font-semibold px-5">Scan your healthcard</label>
-            <input type="file" id="photoFile" onChange={(e) => {handleFileChange(e.target.files[0]), console.log("trigger"), setSelectedWindow()}} className="border-b w-54 py-2 mx-4  focus:outline-none" onClick={() => setSelectedWindow(2)} />
-            <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
+            {
+              loading ? <div className="flex flex-col items-center px-2"><p>Please wait while we process your request...</p><Spinner /></div> :
+              <div className="flex flex-col items-center justify-center">
+                <label className="text-xl font-semibold px-5">Scan your healthcard</label>
+                <input type="file" id="photoFile" onChange={(e) => {handleFileChange(e.target.files[0]), console.log("trigger"), setSelectedWindow()}} className="border-b w-54 py-2 mx-4  focus:outline-none" onClick={() => setSelectedWindow(2)} />
+                <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
+              </div>
+            }
         </div>
     </form>
   )
