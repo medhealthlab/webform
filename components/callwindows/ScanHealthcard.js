@@ -48,7 +48,7 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
         // call another api for validation
         console.log({healthcard: resp.data.heathcard.slice(0,10), location: data.location})
         console.log(data.healthcard)
-        await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: resp.data.heathcard.slice(0,10), location: data.location}).then(async (resp) => {
+        await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: resp.data.heathcard.slice(0,10), location: data.location.toString()}).then(async (resp) => {
           if(resp.data.msg == "visit created"){
             window.localStorage.setItem("token", resp.data.token)
             setData(data => ({...data, token: resp.data.token}))
