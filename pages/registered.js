@@ -1,13 +1,15 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useContext} from "react"
 import { locations } from "../services/locations"
+import { Data } from "@/context/dataContext"
 
 function Registered() {
+  const {data, setData} = useContext(Data)
   const [healthcard, setHealthcard] = useState("")
   const [location , setLocation] = useState("")
   const [token, setToken] = useState()
   useEffect(() => {
     setToken(window.localStorage.getItem("token"))
-    setHealthcard(window.localStorage.getItem("healthcard"))
+    setHealthcard(data.healthcard || window.localStorage.getItem("healthcard"))
     setLocation(window.localStorage.getItem("location"))
   },[])
   return (
