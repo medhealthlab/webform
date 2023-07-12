@@ -32,7 +32,14 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
     try {
         const imageStr = await convertImageToBase64(photoFile);
         const resp = await Axios.post('https://healthcard-ocr.nn.r.appspot.com/scan', { image: imageStr });
-        console.log(resp.data)
+        console.log(`name: ${resp.data.firstname}`)
+        console.log(`hc: ${resp.data.healthcard}`)
+        console.log(`dob: ${resp.data.dob}`)
+        console.log(`last: ${resp.data.lastname}`)
+        console.log(`iss: ${resp.data.issueDate}`)
+        console.log(`exp: ${resp.data.expDate}`)
+
+
         if(resp.status == 200){
           setData((data) => ({
             ...data,
