@@ -45,6 +45,7 @@ function CheckReg() {
         const imageStr = await convertImageToBase64(file);
         const resp = await Axios.post('https://healthcard-ocr.nn.r.appspot.com/scan', { image: imageStr });
         setData(resp)
+        console.log(resp)
         handleSubmit()
     } catch (error) {
         console.error(error);
@@ -58,11 +59,12 @@ function CheckReg() {
     return(
         <div onSubmit={(e) => {e.preventDefault(), formik.handleSubmit()} } className="flex justify-center items-center h-screen -mt-48" onMouseDown={() => setSelectedWindow("")}>
             <div className="flex flex-col border items-center justify-center p-5 rounded-xl shadow-lg transition-all ease-in-out duration-300" onMouseDown={() => setSelectedWindow("")}>
-                {uploadWindow ? 
+                {/* {uploadWindow ? 
                     (<ScanHealthcard selectedWindow={selectedWindow} setSelectedWindow={setSelectedWindow} loading={loading} setLoading={setLoading}/>)
                     :
                     (<EnterHC selectedWindow={selectedWindow} setSelectedWindow={setSelectedWindow} loading={loading} setLoading={setLoading}/>)
-                }
+                } */}
+                <EnterHC selectedWindow={selectedWindow} setSelectedWindow={setSelectedWindow} loading={loading} setLoading={setLoading}/>
                 <button type="button" onClick={() => {setUploadWindow(val => !val)}} className="px-5 py-2 border rounded-full shadow-sm focus:outline-none">{uploadWindow ? "Enter Healthcard number manually" : "Scan healthcard"}</button>
                 <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} onChange={onReCAPTCHAChange} />
                 {/* <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button> */}
