@@ -112,7 +112,7 @@ export default function Registration() {
                 <input type="date" name="dob" value={formik.values.dob} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
               </div>
               
-              <div className='input-field'>
+              {/* <div className='input-field'>
                 <label className='label' >Issue Date*</label>
                 {formik.touched.issueDate  ? <label className='text-sm italic text-red-900'>{formik.errors.issueDate ? formik.errors.issueDate.slice(0,26): "Required"}</label> : ""}
                 <input name="issueDate" type="date" value={formik.values.issueDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
@@ -122,7 +122,7 @@ export default function Registration() {
                 {formik.touched.expDate  ? <label className='text-sm italic text-red-900'>{formik.errors.expDate ? formik.errors.expDate.slice(0,24) : "Required" }</label> : ""}
                 <input name="expDate" type="date" value={formik.values.expDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
               </div>
-            </div>
+            </div> */}
             <div hidden={!hideFinalPage}>
             <div className='input-field'>
               <label className='label'>Phone </label>
