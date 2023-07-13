@@ -121,8 +121,8 @@ export default function Registration() {
                 <label className='label' >Expiry Date*</label>
                 {formik.touched.expDate  ? <label className='text-sm italic text-red-900'>{formik.errors.expDate ? formik.errors.expDate.slice(0,24) : "Required" }</label> : ""}
                 <input name="expDate" type="date" value={formik.values.expDate} onChange={formik.handleChange} onBlur={formik.handleBlur} placeholder={datePlaceholder} className="classic-input"/>
-              </div>
-            </div> */}
+              </div> */}
+            </div>
             <div hidden={!hideFinalPage}>
             <div className='input-field'>
               <label className='label'>Phone </label>
