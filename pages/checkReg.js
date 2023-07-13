@@ -65,7 +65,7 @@ function CheckReg() {
                     (<EnterHC selectedWindow={selectedWindow} setSelectedWindow={setSelectedWindow} loading={loading} setLoading={setLoading}/>)
                 } */}
                 <EnterHC selectedWindow={selectedWindow} setSelectedWindow={setSelectedWindow} loading={loading} setLoading={setLoading}/>
-                <button type="button" onClick={() => {setUploadWindow(val => !val)}} className="px-5 py-2 border rounded-full shadow-sm focus:outline-none">{uploadWindow ? "Enter Healthcard number manually" : "Scan healthcard"}</button>
+                {/* <button type="button" onClick={() => {setUploadWindow(val => !val)}} className="px-5 py-2 border rounded-full shadow-sm focus:outline-none">{uploadWindow ? "Enter Healthcard number manually" : "Scan healthcard"}</button> */}
                 <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY} onChange={onReCAPTCHAChange} />
                 {/* <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button> */}
             </div>
