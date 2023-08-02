@@ -6,6 +6,7 @@ import Spinner from "../spinner/Spinner"
 function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}) {
     const {data, setData} = useContext(Data)
     const router = useRouter()
+    const [parse, setParse] = useState(false)
     const [photoFile, setPhotoFile] = useState()
     const handleFileChange= (e) => {
         setPhotoFile(e)
@@ -88,6 +89,7 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
               <div className="flex flex-col items-center justify-center">
                 <label className="text-xl font-semibold px-5">Scan your healthcard</label>
                 <input type="file" id="photoFile" onChange={(e) => {handleFileChange(e.target.files[0]), console.log("trigger"), setSelectedWindow()}} className="border-b w-54 py-2 mx-4  focus:outline-none" onClick={() => setSelectedWindow(2)} />
+                {/* <button type="button" className="px-5 py-2 rounded-full border shadow-sm mt-2" onClick={() => {useProcessed(true)}}>Process Image</button> */}
                 <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
               </div>
             }
