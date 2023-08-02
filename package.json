@@ -28,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-google-autocomplete": "^2.7.3",
     "react-google-recaptcha": "^2.1.0",
+    "react-places-autocomplete": "^7.3.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
