@@ -2,10 +2,6 @@ import {useState, useEffect, useContext} from 'react'
 import {useFormik} from "formik"
 import {useRouter} from "next/router"
 import { ValidationSchema } from '../../services/Validation'
-import app from "../../services/firebase/Firebase"
-import CryptoJS from "crypto-js"
-import {db} from "../../services/firebase/Firebase"
-import {getFirestore, doc, setDoc, addDoc, collection } from "firebase/firestore"
 import Head from "next/head"
 import Axios from 'axios'
 import moment from "moment"

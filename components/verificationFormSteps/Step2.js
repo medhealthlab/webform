@@ -10,7 +10,6 @@ function Step2() {
   const [dob, setDob] = useState(state.dob ? state.dob : "")
   const[sex, setSex] = useState(state.sex ? state.sex : "")
   const [error, setError] = useState([])
-
   const handleContextUpdate = (payload) => {
     dispatch({type: 'UPDATE_DATA', payload: payload})
   }
@@ -37,7 +36,6 @@ function Step2() {
             <option value="F">Female</option>
             <option value="O">Others</option>
           </select>
-
         </fieldset>
       </div>
     </div>

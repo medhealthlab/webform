@@ -6,6 +6,8 @@ import Step4 from "@/components/verificationStepsForm/Step4"
 import Step5 from "@/components/verificationStepsForm/Step5"
 import SelectedStep from "@/components/verificationStepsForm/SelectedStep"
 import { NewDataContext } from "@/context/newDataContext"
+import ErrorContext from '@/context/errorContext'
+
 
 function RegistrationMultipleStep() {
     const [page, setPage] = useState(1)
@@ -31,27 +33,29 @@ function RegistrationMultipleStep() {
     useEffect(() => {
         const cal = (page * 100) / numberOfSteps;
         setCompletedProgressBar(cal)
-        console.log(state)
+        // console.log(state)
     },[page, state])
   return (
-    <div className="flex flex-col m-5 border items-center justify-center">
-        <div className="flex flex-col">
-            <div className="flex border w-[80vw] rounded-full my-5 overflow-hidden">
-                <div id="progress-bar" style={progressBarStyle} className={completedProgressBar == 100 ? `border-8 transition-all ease-in-out duration-500 border-green-600` : `border-8 transition-all ease-in-out duration-500 border-blue-600`}></div>
-                <div id="progress-bar-incomplete" style={progressBarIncompleteStyle} className={completedProgressBar != 100 ? `border-8 transition-all ease-in-out duration-500 border-blue-200` : "transition-all ease-in-out duration-500"}></div>
-            </div>
-            <div id="reg-form" className=" flex flex-col justify-center items-center m-2" >
-                <h1 className="text-xl font-semibold">Patient Registration</h1>                
-                <div id="verification-steps">
-                  <SelectedStep currentPage={page} />
-                </div>
-                <div className="flex gap-5 my-5">
-                  {page != 1 ? <button className="px-3 py-1 border rounded-full shadow-sm hover:shadow-xl outline-none hover:border-blue-500" onClick={() => { (page > 1) ? (console.log("updating") , setPage(val => val-1) ): (setPage(1) ) , console.log("page updated")}}>Previous</button> : ""}
-                  <button className="px-3 py-1 border rounded-full shadow-sm hover:shadow-xl outline-none hover:border-blue-500" onClick={() => { (page < 5) ? (console.log("updating", state) , setPage(val => val+1) ): (setPage(1) ) , console.log("page updated")}}>{page == 5 ? "Submit" : "Next"}</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ErrorContext>
+      <div className="flex flex-col m-5 border items-center justify-center">
+          <div className="flex flex-col">
+              <div className="flex border mx-5 rounded-full my-5 overflow-hidden">
+                  <div id="progress-bar" style={progressBarStyle} className={completedProgressBar == 100 ? `border-8 transition-all ease-in-out duration-500 border-green-600` : `border-8 transition-all ease-in-out duration-500 border-blue-600`}></div>
+                  <div id="progress-bar-incomplete" style={progressBarIncompleteStyle} className={completedProgressBar != 100 ? `border-8 transition-all ease-in-out duration-500 border-blue-200` : "transition-all ease-in-out duration-500"}></div>
+              </div>
+              <div id="reg-form" className=" flex flex-col justify-center items-center m-2" >
+                  <h1 className="text-xl font-semibold">Patient Registration</h1>                
+                  <div id="verification-steps">
+                    <SelectedStep currentPage={page} />
+                  </div>
+                  <div className="flex gap-5 my-5">
+                    {page != 1 ? <button className="px-3 py-1 border rounded-full shadow-sm hover:shadow-xl outline-none hover:border-blue-500" onClick={() => { (page > 1) ? (console.log("updating") , setPage(val => val-1) ): (setPage(1) ) , console.log("page updated")}}>Previous</button> : ""}
+                    {page != 5 ? <button className="px-3 py-1 border rounded-full shadow-sm hover:shadow-xl outline-none hover:border-blue-500" onClick={() => { (page < 5) ? (console.log("updating", state) , setPage(val => val+1) ): (setPage(1) ) , console.log("page updated")}}>{page == 5 ? "Submit" : "Next"}</button> : ""}
+                  </div>
+              </div>
+          </div>
+      </div>
+    </ErrorContext>
   )
 }
 

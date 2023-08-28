@@ -3,8 +3,10 @@ import Axios from "axios"
 import { Data } from "@/context/dataContext"
 import { useRouter } from "next/router"
 import Spinner from "../spinner/Spinner"
+import { NewDataContext } from "@/context/newDataContext"
 function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}) {
     const {data, setData} = useContext(Data)
+    const {state, dispatch} = useContext(NewDataContext)
     const router = useRouter()
     const [parse, setParse] = useState(false)
     const [photoFile, setPhotoFile] = useState()
@@ -32,16 +34,24 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
     setLoading(true);
     try {
         const imageStr = await convertImageToBase64(photoFile);
+        console.log(imageStr)
         const resp = await Axios.post('https://healthcard-ocr.nn.r.appspot.com/scan', { image: imageStr });
+        console.log(resp)
         console.log(`name: ${resp.data.firstname}`)
-        console.log(`hc: ${resp.data.healthcard}`)
+        console.log(`hc: ${resp.data.heathcard}`)
         console.log(`dob: ${resp.data.dob}`)
         console.log(`last: ${resp.data.lastname}`)
         console.log(`iss: ${resp.data.issueDate}`)
         console.log(`exp: ${resp.data.expDate}`)
-
-
-        if(resp.status == 200){
+        dispatch({type: "UPDATE_DATA", payload: {
+                                                  healthcard: resp.data.heathcard.length >= 10 ? resp.data.heathcard.slice(0,10) : "", 
+                                                  vc: resp.data.heathcard.length >=10 ? resp.data.heathcard.slice(10,12) : "" , 
+                                                  firstname: resp.data.firstname ? resp.data.firstname : "NOT DETECTED",
+                                                  middlename: resp.data.middlename ? resp.data.middlename : "NOT DETECTED",
+                                                  lastname: resp.data.lastname ? resp.data.lastname : "NOT DETECTED",
+                                                  // dob: resp.data.dob ? resp.data.dob : ""
+                                                }})
+        if(resp.status == 200){ 
           setData((data) => ({
             ...data,
             healthcard: resp.data.heathcard.slice(0,10),
@@ -66,11 +76,11 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
           }else{
             setLoading(false),
             console.log("error occured."),
-            router.push("/patient/Registration")
+            router.push("/patient/RegistrationMultipleStep")
           }
         }, err => {setLoading(false), console.log(err.message)})
         }else{
-          router.push("/registration")
+          router.push("/patient/RegistrationMultipleStep")
         }
     } catch (error) {
         console.error(error);

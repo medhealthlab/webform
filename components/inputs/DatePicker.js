@@ -19,9 +19,9 @@ function DatePick({title, type, data, error, validationRule}) {
     <fieldset className={`border-t px-3 rounded-md transition-all ease-in-out duration-300 ${selected ? "shadow-md border-blue-500" : ""} ${titleError.length >= 1  ? "border-red-500" : ""}`}>
           <legend className={`transition ease-in-out duration-300 px-2`}>{title || "DOB"}</legend>
             <div className="flex flex-col">
-              <Basic title={"Year"} data={[year, setYear]} maxlength={4} type={"number"} error={[titleError, setTitleError]}/>
-              <Basic title={"Month"} data={[month, setMonth]} maxlength={2} type={"number"} error={[titleError, setTitleError]}/>              
-              <Basic title={"Day"} data={[date, setDate]} type={""} maxlength={2} error={[titleError, setTitleError]}/>              
+              <Basic title={"Year"} data={[year, setYear]} maxlength={"4"} type={"number"} error={[titleError, setTitleError]}/>
+              <Basic title={"Month"} data={[month, setMonth]} maxlength={"2"} type={"number"} error={[titleError, setTitleError]}/>              
+              <Basic title={"Day"} data={[date, setDate]} maxlength={"2"} type={"number"} error={[titleError, setTitleError]}/>              
             </div>
 
     </fieldset>

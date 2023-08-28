@@ -40,7 +40,7 @@ function Step4() {
       <AutoComplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} style={{ width: "90%" }} options={{
         types: ['address'],
         componentRestrictions: { country: "ca" },
-      }} onPlaceSelected={(place) => {setAddress(place)}}/>
+      }} onPlaceSelected={(place) => {setAddress(place)}} placeholder="Enter your address here" className="border px-2 py-2 mt-2 rounded-xl"/>
       <p className="text-center text-sm pt-4">Your address will be self populated underneath</p>
       <Basic title={"Unit / Building number"} type="string" data={[unit, setUnit]} error={[error, setError]}/>
       <Basic title={"Street"} type="string" data={[street, setStreet]} error={[error, setError]} disabled={true}/>

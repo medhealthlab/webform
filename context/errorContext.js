@@ -13,14 +13,14 @@ const initState = {
     expiryDate: "",
     phone:"",
     address: "",
-    sex: "x"
+    sex: ""
 }
 
 
 const reducer = (state, action) => {
     switch(action.type){
-        case "UPDATE_DATA" :
-            console.log("updating context")
+        case "UPDATE_ERROR" :
+            console.log("updating error context")
             return {
                 ...state,
                 ...action.payload
@@ -30,17 +30,17 @@ const reducer = (state, action) => {
     }
 }
 
-const NewDataContext = createContext()
+const ErrorContext = createContext()
 
-const NewDataContextProvider = ({ children}) => {
-    const [state, dispatch] = useReducer(reducer, initState)
+const ErrorContextProvider = ({ children}) => {
+    const [errorState, errorDispatcher] = useReducer(reducer, initState)
     return(
-        <NewDataContext.Provider value={{state, dispatch}}>
+        <ErrorContext.Provider value={{errorState, errorDispatcher}}>
             {children}
-        </NewDataContext.Provider>
+        </ErrorContext.Provider>
     )
 }
 
-export {NewDataContext}
+export {ErrorContext}
 
-export default NewDataContextProvider
+export default ErrorContextProvider

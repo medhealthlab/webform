@@ -10,7 +10,7 @@ function Registered() {
   useEffect(() => {
     setToken(window.localStorage.getItem("token"))
     setHealthcard(data.healthcard || window.localStorage.getItem("healthcard"))
-    setLocation(window.localStorage.getItem("location"))
+    setLocation(window.localStorage.getItem("location") ? window.localStorage.getItem("location") : window.localStorage.setItem("location", data.location))
   },[])
   return (
     <div className="px-10 flex flex-col text-center">
