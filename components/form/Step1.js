@@ -1,22 +1,28 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import {useFormik} from "formik"
 import {Step1Schema} from "./validation/step1"
+import { FormContext } from "@/context/formContext"
 function Step1({page, setPage}) {
+    const {state, dispatch} = useContext(FormContext)
+    const handleStateUpdate = (payload) => {
+        dispatch({type: "UPDATE_STATE", payload: payload})
+    }
     const formik = useFormik({
         initialValues:{
-            healthcard: "",
-            vc: "",
+            healthcard: state.healthcard ? state.healthcard: "",
+            vc: state.vc ? state.vc : "",
         },
         validationSchema: Step1Schema,
         onSubmit: (values) => {
+            handleStateUpdate(values),
             console.log(values)
         } 
     })
 
     useEffect(() => {
-        console.log(formik.errors),
-        console.log(page)
-    },[page, formik.errors]) 
+        console.log(formik.values),
+        console.log(state)
+    },[page]) 
 
   return (
     <div className="">

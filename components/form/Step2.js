@@ -67,6 +67,20 @@ function Step2({page, setPage}) {
             onClick={(e) => {
                 e.preventDefault();
                 if (formik.isValid) {
+                    setPage(val => val - 1);
+                }
+            }}
+        >
+            Previous Page
+        </button>
+
+        <button
+            type="button"
+            // disabled={formik.errors}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={(e) => {
+                e.preventDefault();
+                if (formik.isValid) {
                     setPage(val => val + 1);
                 }
             }}
