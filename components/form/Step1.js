@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import {useFormik} from "formik"
 import {Step1Schema} from "./validation/step1"
-function Step1(props) {
+function Step1({page, setPage}) {
     const formik = useFormik({
         initialValues:{
             healthcard: "",
@@ -14,8 +14,9 @@ function Step1(props) {
     })
 
     useEffect(() => {
-        console.log(formik.errors)
-    },[formik.errors]) 
+        console.log(formik.errors),
+        console.log(page)
+    },[page, formik.errors]) 
 
   return (
     <div className="">
@@ -32,7 +33,7 @@ function Step1(props) {
         <button 
         type="button"
         // disabled={formik.errors} 
-        className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors}`} onClick={() => (formik.handleSubmit(), props.setPage(val => val++))}>Next Page</button>
+        className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors}`} onClick={(e) => (e.preventDefault(), setPage(val => val = val + 1), formik.handleSubmit())}>Next Page</button>
     </div>
   )
 }
