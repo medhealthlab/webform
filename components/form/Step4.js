@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import {useFormik} from "formik"
+import AutoComplete from "react-google-autocomplete";
 import {Step1Schema} from "./validation/step1"
 function Step1() {
     const formik = useFormik({
@@ -19,15 +20,10 @@ function Step1() {
 
   return (
     <div className="">
-        <div id="healthcard-number" className="flex flex-col">
-            <label className="text-xl">Healthcard</label>
-            <input placeholder="XXXX-XXX-XXX" id="healthcard" values={formik.values.healthcard} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
-        </div>
-
-        <div id="version-code" className="flex flex-col">
-            <label className="text-xl">Version Code</label>
-            <input placeholder="VC" id="vc" values={formik.values.vc} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
-        </div>
+        <AutoComplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} style={{ width: "90%" }} options={{
+        types: ['address'],
+        componentRestrictions: { country: "ca" },
+      }} onPlaceSelected={(place) => {setAddress(place)}} placeholder="Enter your address here" className="border px-2 py-2 mt-2 rounded-xl"/>
 
         <button disabled={formik.errors} className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors}`}>Next Page</button>
     </div>
