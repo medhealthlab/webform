@@ -20,26 +20,27 @@ function Step1({page, setPage}) {
     })
 
     useEffect(() => {
-        console.log(formik.values),
-        console.log(state)
-    },[page]) 
+        console.log(formik.errors)
+    }) 
 
   return (
     <div className="">
         <div id="healthcard-number" className="flex flex-col">
             <label className="text-xl">Healthcard</label>
-            <input placeholder="XXXX-XXX-XXX" id="healthcard" values={formik.values.healthcard} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            <input placeholder="XXXX-XXX-XXX" id="healthcard" value={formik.values.healthcard} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            
         </div>
 
         <div id="version-code" className="flex flex-col">
             <label className="text-xl">Version Code</label>
-            <input placeholder="VC" id="vc" values={formik.values.vc} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            <input placeholder="VC" id="vc" value={formik.values.vc} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
         </div>
-
+            {formik.errors.healthcard ? <p>{formik.errors.healthcard}</p> :""}
+            {formik.errors.vc ? <p>{formik.errors.vc}</p>:""}
         <button 
         type="button"
         // disabled={formik.errors} 
-        className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors}`} onClick={(e) => (e.preventDefault(), setPage(val => val = val + 1), formik.handleSubmit())}>Next Page</button>
+        className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors.healthcard || formik.errors.vc ? "border-red-500 cursor-not-allowed" : ""}`} disabled={formik.errors.healthcard || formik.errors.vc} onClick={(e) => (e.preventDefault(), setPage(val => val = val + 1), formik.handleSubmit())}>Next Page</button>
     </div>
   )
 }
