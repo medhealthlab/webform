@@ -1,21 +1,30 @@
-import { useEffect } from "react"
+import { useEffect, useContext } from "react"
 import {useFormik} from "formik"
 import {Step3Schema} from "./validation/step3"
+import { FormContext } from "@/context/formContext"
 function Step3({page, setPage}) {
+    const {state, dispatch} = useContext(FormContext)
+
+    const handleStateUpdate = (payload) => {
+        console.log("saving state")
+        dispatch({type: "UPDATE_STATE", payload: payload})
+    }
     const formik = useFormik({
         initialValues:{
-            email: "",
-            mobile: "",
+            email: state.email ? state.email : "" ,
+            mobile: state.mobile ? state.mobile : "" ,
         },
         validationSchema: Step3Schema,
         onSubmit: (values) => {
+            handleStateUpdate(values)
             console.log(values)
         } 
     })
-
+    
     useEffect(() => {
         console.log(formik.errors)
-    },[formik.errors]) 
+        formik.values.mobile = parseInt(formik.values.mobile) ? parseInt(formik.values.mobile) : ""  
+    },[formik.errors, formik.values.mobile]) 
 
   return (
     <div className="">
@@ -35,6 +44,7 @@ function Step3({page, setPage}) {
                 <label className="text-xl">Mobile*</label>
                 <input
                     type="tel"
+                    maxLength={10}
                     placeholder="Mobile"
                     id="mobile"
                     value={formik.values.mobile}
@@ -42,16 +52,30 @@ function Step3({page, setPage}) {
                     className="pl-5 text-lg border rounded-xl mt-1 mb-3"
                 />
             </div>
+            <button
+            type="button"
+            // disabled={formik.errors}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ? "" : "opacity-50 border-red-500 cursor-not-allowed"}`}
+            onClick={(e) => {
+                e.preventDefault();
+                if (formik.isValid) {
+                    setPage(val => val - 1);
+                }
+            }}
+        >
+            Previous Page
+        </button>
 
             <button
             type="button"
             // disabled={formik.errors}
-            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ? "" : "opacity-50 border-red-500 cursor-not-allowed"}`}
             onClick={(e) => {
                 e.preventDefault();
-                // if (formik.isValid) {
+                if (formik.isValid) {
                     setPage(val => val + 1);
-                // }
+                };
+                formik.handleSubmit()
             }}
         >
             Next Page
