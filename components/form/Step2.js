@@ -35,7 +35,7 @@ function Step2({page, setPage}) {
     },[formik.values.day, formik.values.month, formik.values.year , formik.errors]) 
 
   return (
-    <div className="">
+    <div className="border rounded-xl shadow-xl p-10">
         <div id="firstname" className="flex flex-col">
             <label className="text-xl">Firstname*</label>
             <input placeholder="firstname" id="firstname" value={formik.values.firstname} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>

@@ -1,9 +1,9 @@
 import { useState, useEffect, useContext } from "react"
 import {useFormik} from "formik"
 import AutoComplete from "react-google-autocomplete";
-import {Step1Schema} from "./validation/step1"
+// import {Step1Schema} from "./validation/step1"
 import { FormContext } from "@/context/formContext";
-function Step1() {
+function Step4({page, setPage}) {
   const {state, dispatch} = useContext(FormContext)
   const [address, setAddress] = useState("")
   const [unit, setUnit] = useState(state.sub ? state.sub.unit : "")
@@ -37,7 +37,7 @@ function Step1() {
         initialValues:{
             address: ""
         },
-        validationSchema: Step1Schema,
+        // validationSchema: Step1Schema,
         onSubmit: (values) => {
             console.log(values);
             handleStateUpdate(values)
@@ -52,11 +52,14 @@ function Step1() {
     },[formik.errors, address, unit]) 
 
   return (
-    <div className="w">
-        <AutoComplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} style={{ width: "100%" }} options={{
-        types: ['address'],
-        componentRestrictions: { country: "ca" },
-      }} onPlaceSelected={(place) => {setAddress(place)}} placeholder="Enter your address here" className="border px-2 py-2 mt-2 rounded-xl"/>
+    <div className="border rounded-xl shadow-xl p-10">
+      <div id="address-field" className="flex flex-col">
+          <label className="text-xl">Address*</label>
+          <AutoComplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} style={{ width: "100%" }} options={{
+          types: ['address'],
+          componentRestrictions: { country: "ca" },
+        }} onPlaceSelected={(place) => {setAddress(place)}} placeholder="Enter your address here" className="border px-2 py-2 mt-2 rounded-xl"/>
+      </div>
       <div id="unit" className="flex flex-col">
                 <label className="text-xl">Unit*</label>
                 <input
@@ -115,9 +118,36 @@ function Step1() {
                     className="pl-5 text-lg border rounded-xl mt-1 mb-3"
                 />
       </div>
-        <button disabled={formik.errors} className={`px-3 py-2 rounded-full border border-blue-500 ${formik.errors}`}>Next Page</button>
+      <button
+            type="button"
+            // disabled={formik.errors}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ? "" : "opacity-50 border-red-500 cursor-not-allowed"}`}
+            onClick={(e) => {
+                e.preventDefault();
+                if (formik.isValid) {
+                    setPage(val => val - 1);
+                }
+            }}
+        >
+            Previous Page
+        </button>
+
+            <button
+            type="button"
+            // disabled={formik.errors}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ? "" : "opacity-50 border-red-500 cursor-not-allowed"}`}
+            onClick={(e) => {
+                e.preventDefault();
+                if (formik.isValid) {
+                    setPage(val => val + 1);
+                };
+                formik.handleSubmit()
+            }}
+        >
+            Next Page
+        </button>
     </div>
   )
 }
 
-export default Step1
+export default Step4

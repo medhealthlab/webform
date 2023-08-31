@@ -27,7 +27,7 @@ function Step3({page, setPage}) {
     },[formik.errors, formik.values.mobile]) 
 
   return (
-    <div className="">
+    <div className="border rounded-xl shadow-xl p-10">
             <div id="email" className="flex flex-col">
                 <label className="text-xl">Email*</label>
                 <input
