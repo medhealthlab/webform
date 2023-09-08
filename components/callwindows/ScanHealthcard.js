@@ -41,7 +41,7 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
     setLoading(true);
     try {
         const imageStr = await convertImageToBase64(photoFile);
-        console.log(imageStr)
+        // console.log(imageStr)
         // ocr call
         await Axios.post('https://healthcard-ocr.nn.r.appspot.com/scan', { image: imageStr }).then(async resp => {
           console.log(resp)
