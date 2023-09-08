@@ -6,9 +6,11 @@ import {useRouter} from "next/router"
 import Axios from "axios"
 import Spinner from "../spinner/Spinner"
 import { NewDataContext } from "@/context/newDataContext"
+import { FormContext } from "@/context/formContext"
 function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
     const router = useRouter()
     const {data, setData} = useContext(Data)
+    const [error, setError] = useState("")
     // const formik = useFormik({
     //     initialValues: {
     //         healthcard: data.healthcard || ""
@@ -41,7 +43,7 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
     // })
 
 // new submit algo
-    const {state, dispatch} = useContext(NewDataContext)
+    const {state, dispatch} = useContext(FormContext)
     const [healthcard, setHealthcard] = useState(state.healthcard ? state.healthcard : "")
 
     const handleChange = (e) => {
@@ -65,7 +67,7 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
           }else{
             setLoading(false),
             console.log("error occured."),
-            router.push("/patient/RegistrationMultipleStep")
+            router.push("/patient/LineUp")
           }
         }, err => {setLoading(false), console.log(err.message)})
       ): (
@@ -75,7 +77,8 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
       )
     }
     useEffect(() => {
-      dispatch({type: "UPDATE_DATA", payload:{ healthcard: healthcard}})
+      healthcard.length == 10 ? setError("") : setError("Enter only 10 digit healthcard")
+      dispatch({type: "UPDATE_STATE", payload:{ healthcard: healthcard}})
     },[healthcard])
 // 
   return (
@@ -84,6 +87,9 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
             <label className="text-xl font-semibold px-5">Enter your Health card number</label>
             {/* {formik.errors.healthcard ? <label>{formik.errors.healthcard}</label>: ""} */}
             <input type="string" id="healthcard" onChange={handleChange} value={healthcard} className="border-b w-[90%] py-2 mx-4 focus:outline-none" placeholder={"Click here to enter your 10 digit healthcard number"} onClick={() => {setSelectedWindow(1)}} autoComplete="off"></input>
+            {
+              error ? <p className="text-red-900">{error}</p> : ""
+            }
             {
               loading ? <Spinner /> : <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
             }
