@@ -1,8 +1,9 @@
-import Step1 from "../components/verificationFormSteps/Step1"
+// import Step1 from "../components/verificationFormSteps/Step1"
 
 function Playground() {
   return (
-    <Step1 />
+    // <Step1 />
+    <></>
   )
 }
 
