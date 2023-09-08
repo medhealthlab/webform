@@ -1,8 +1,12 @@
-import { useEffect, useContext } from "react"
+import { useEffect, useContext, useRef } from "react"
 import {useFormik} from "formik"
 import {Step2Schema} from "./validation/step2"
 import { FormContext } from "@/context/formContext"
 function Step2({page, setPage}) {
+    const dayRef = useRef()
+    const monthRef = useRef()
+    const yearRef = useRef()
+
     const {state, dispatch} = useContext(FormContext)
     const handleStateUpdate = (payload) => {
         console.log("saving state")
@@ -25,8 +29,22 @@ function Step2({page, setPage}) {
             console.log(state)
         } 
     })
+    const handleYearInput = (value) => {
+        if(value.length == 4){
+            monthRef.current.focus()
+        }
+    }
+    const handleMonthInput = (year, month) => {
+        if(year.length == 4){
+            if(month.length == 2)
+            dayRef.current.focus()
+        }
+    }
 
+    
     useEffect(() => {
+        handleYearInput(formik.values.year)
+        handleMonthInput(formik.values.year, formik.values.month)
         console.log(formik.isValid)
         formik.values.dob = formik.values.year + formik.values.month + formik.values.day
         console.log(state)
@@ -54,9 +72,9 @@ function Step2({page, setPage}) {
         <div id="dob" className="flex flex-col">
             <label className="text-xl">Date of Birth*</label>
             <div className="flex">
-                <input placeholder="DD" id="day" value={formik.values.day} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
-                <input placeholder="MM" id="month" value={formik.values.month} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
-                <input placeholder="YYYY" id="year" value={formik.values.year} maxLength={4} onChange={formik.handleChange} className="w-24 pl-2 text-lg border rounded-xl mt-1 mb-3"/>
+                <input placeholder="YYYY" id="year" ref={yearRef} value={formik.values.year} maxLength={4} onChange={formik.handleChange} className="w-24 pl-2 text-lg border rounded-xl mt-1 mb-3"/>
+                <input placeholder="MM" id="month" ref={monthRef} value={formik.values.month} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
+                <input placeholder="DD" id="day" ref={dayRef} value={formik.values.day} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
             </div>
         </div>
 

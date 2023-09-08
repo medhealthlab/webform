@@ -4,7 +4,9 @@ import {Step1Schema} from "./validation/step1"
 import { FormContext } from "@/context/formContext"
 function Step1({page, setPage}) {
     const {state, dispatch} = useContext(FormContext)
+
     const handleStateUpdate = (payload) => {
+        console.log("saving state")
         dispatch({type: "UPDATE_STATE", payload: payload})
     }
     const formik = useFormik({
@@ -14,14 +16,13 @@ function Step1({page, setPage}) {
         },
         validationSchema: Step1Schema,
         onSubmit: (values) => {
-            handleStateUpdate(values),
-            console.log(values)
-        } 
+            handleStateUpdate(values)
+            console.log(typeOf(values))
+        }
     })
 
     useEffect(() => {
-        console.log(formik.errors)
-    }) 
+    },[state]) 
 
   return (
     <div className="border rounded-xl shadow-xl p-10">
@@ -36,10 +37,20 @@ function Step1({page, setPage}) {
         </div>
             {formik.errors.healthcard ? <p>{formik.errors.healthcard}</p> :""}
             {formik.errors.vc ? <p>{formik.errors.vc}</p>:""}
-        <button 
-        type="submit"
-        // disabled={formik.errors} 
-        className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ?  "" : "border-red-500 cursor-not-allowed"}`} disabled={formik.isValid} onClick={(e) => (e.preventDefault(), setPage(val => val = val + 1))}>Next Page</button>
+            <button
+            type="button"
+            // disabled={formik.errors}
+            className={`px-3 py-2 rounded-full border border-blue-500 ${formik.isValid ? "" : "opacity-50 border-red-500 cursor-not-allowed"}`}
+            onClick={(e) => {
+                e.preventDefault();
+                formik.handleSubmit()
+                if (formik.isValid) {
+                    setPage(val => val + 1);
+                };
+            }}
+        >
+            Next Page
+        </button>
     </div>
   )
 }

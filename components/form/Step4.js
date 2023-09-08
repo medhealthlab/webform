@@ -15,24 +15,7 @@ function Step4({page, setPage}) {
       console.log("saving state")
       dispatch({type: "UPDATE_STATE", payload: payload})
   }
-  const updateAddress = (resp) => {
-    if(resp.address_components){
-      setStreet(`${resp.address_components[0].long_name} ${resp.address_components[1].long_name}`)
-      resp.address_components.map((address_array_ele) => {
-        
-        if(address_array_ele.types.includes("administrative_area_level_3")){
-          setCity(address_array_ele.long_name)
-        }
-        if(address_array_ele.types.includes("administrative_area_level_1")){
-          setProvince(address_array_ele.long_name)
-        }
-        if(address_array_ele.types == "postal_code"){
-          setPostalcode(address_array_ele.long_name)
-        }
-      })
-    }
-    formik.values.address = `${unit ? `${unit} - ` : ""} ${street}, ${city}, ${province}, ${postalcode}.`
-  }
+  
     const formik = useFormik({
         initialValues:{
             address: ""
@@ -40,14 +23,31 @@ function Step4({page, setPage}) {
         // validationSchema: Step1Schema,
         onSubmit: (values) => {
             console.log(values);
-            handleStateUpdate(values)
+            handleStateUpdate({ address: values.address, sub: { unit:unit, street:street, city:city, province:province, postalcode:postalcode}} )
         } 
     })
-
+    const updateAddress = (resp) => {
+      if(resp.address_components){
+        setStreet(`${resp.address_components[0].long_name} ${resp.address_components[1].long_name}`)
+        resp.address_components.map((address_array_ele) => {
+          
+          if(address_array_ele.types.includes("administrative_area_level_3")){
+            setCity(address_array_ele.long_name)
+          }
+          if(address_array_ele.types.includes("administrative_area_level_1")){
+            setProvince(address_array_ele.long_name)
+          }
+          if(address_array_ele.types == "postal_code"){
+            setPostalcode(address_array_ele.long_name)
+          }
+        })
+      }
+      formik.values.address = `${unit ? `${unit} - ` : ""} ${street}, ${city}, ${province}, ${postalcode}.`
+    }
     useEffect(() => {
       updateAddress(address)
       console.log(address)
-        console.log(formik.values.address)
+      console.log(formik.values.address)
         // formik.values.address = address
     },[formik.errors, address, unit]) 
 
