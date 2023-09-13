@@ -51,6 +51,7 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
     }
 
     const handleSubmit = async () => {
+      setLoading(true)
       console.log("State: ")
       console.log(state)
       console.log("Location: ")
@@ -91,7 +92,12 @@ function EnterHC({selectedWindow, setSelectedWindow, loading, setLoading}) {
               error ? <p className="text-red-900">{error}</p> : ""
             }
             {
-              loading ? <Spinner /> : <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
+              loading ? 
+                        <div className="pt-4">
+                          <Spinner />
+                        </div> 
+                        : 
+                        <button type="submit" className="px-5 py-2 rounded-full border shadow-sm mt-2">Submit</button>
             }
         </div>
     </form>
