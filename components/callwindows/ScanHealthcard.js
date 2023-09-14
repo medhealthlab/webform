@@ -74,12 +74,14 @@ function ScanHealthcard({selectedWindow, setSelectedWindow, loading, setLoading}
               expDate: resp.data.expDate
             }))
             console.log(data)
+            handleStateUpdate(formattedData)
             // 
             setTimeout(() => {
             },400)
           // firebase for reg and validation
           console.log({healthcard: resp.data.heathcard.slice(0,10), location: data.location})
           await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: resp.data.heathcard.slice(0,10), location: data.location.toString()}).then(async (resp) => {
+            // console.log(resp)
             if(resp.data.msg == "visit created"){
               // generate token mechanism
               window.localStorage.setItem("token", resp.data.token)
