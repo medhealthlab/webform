@@ -23,12 +23,13 @@ function Step5({page, setPage}) {
             address: state.address ? state.address : "",
             province: state.sub ? state.sub.province ? state.sub.province : "" : "",
             postalCode: state.sub ? state.sub.postalCode ? state.sub.postalCode : "" : "",
-
         },
         validationSchema: Step1Schema,
         onSubmit: async (values) => {
           console.log(values)
-          const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values, source: "webform" });
+          const resp = await Axios.post(process.env.NEXT_PUBLIC_REGISTER_NEW_PATIENT, {...values,
+             source: "webform" 
+            });
       if(resp.data.status == "operation successful"){
         console.log("creating new visit", values.location)
         const resp2 = await Axios.post(process.env.NEXT_PUBLIC_CREATE_NEW_VISIT, {healthcard: values.healthcard, location: values.location.toString()})
