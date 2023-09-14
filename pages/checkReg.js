@@ -53,7 +53,7 @@ function CheckReg() {
     // };
     useEffect(()=>{
         location = window.localStorage.getItem("location")
-        console.log(location)
+        // console.log(location)
         // console.log(data)
     },[uploadWindow])
     return(
