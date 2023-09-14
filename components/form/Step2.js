@@ -55,24 +55,24 @@ function Step2({page, setPage}) {
   return (
     <div className="border rounded-xl shadow-xl p-10">
         <div id="firstname" className="flex flex-col">
-            <label className="text-xl">Firstname*</label>
-            <input placeholder="firstname" id="firstname" value={formik.values.firstname} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            <label className="text-xl">First Name*</label>
+            <input placeholder="First name" id="firstname" value={formik.values.firstname} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
         </div>
 
         <div id="middlename" className="flex flex-col">
-            <label className="text-xl">middlename</label>
-            <input placeholder="middlename" id="middlename" value={formik.values.middlename} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            <label className="text-xl">Middle Name</label>
+            <input placeholder="Middlename" id="middlename" value={formik.values.middlename} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
         </div>
 
         <div id="lastname" className="flex flex-col">
-            <label className="text-xl">Lastname*</label>
-            <input placeholder="lastname" id="lastname" value={formik.values.lastname} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
+            <label className="text-xl">Last Name*</label>
+            <input placeholder="Lastname" id="lastname" value={formik.values.lastname} onChange={formik.handleChange} className="pl-5 text-lg border rounded-xl mt-1 mb-3"/>
         </div>
 
         <div id="dob" className="flex flex-col">
             <label className="text-xl">Date of Birth*</label>
             <div className="flex">
-                <input placeholder="YYYY" id="year" ref={yearRef} value={formik.values.year} maxLength={4} onChange={formik.handleChange} className="w-24 pl-2 text-lg border rounded-xl mt-1 mb-3"/>
+                <input placeholder="YYYY" id="year" ref={yearRef} value={formik.values.year} maxLength={4} onChange={formik.handleChange} className="w-24 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
                 <input placeholder="MM" id="month" ref={monthRef} value={formik.values.month} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
                 <input placeholder="DD" id="day" ref={dayRef} value={formik.values.day} maxLength={2} onChange={formik.handleChange} className="w-16 pl-2 text-lg border rounded-xl mt-1 mb-3 mr-2"/>
             </div>
